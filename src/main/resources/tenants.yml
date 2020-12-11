@@ -1,0 +1,21 @@
+
+tenants:
+  datasources:
+    - alias: tenant_a
+      host: localhost
+      port: 27017
+      database: tenant_a_db
+      username: admin
+      password: admin
+    - alias: tenant_b
+      host: localhost
+      port: 27017
+      database: tenant_b_db
+      username: admin
+      password: admin
+    - alias: tenant_c
+      host: localhost
+      port: 27017
+      database: tenant_c_db
+      username: admin
+      password: admin

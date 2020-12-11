@@ -1,0 +1,19 @@
+spring:
+  redis:
+    port: 6161
+    host: localhost
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# ===================================================================
+application:
+  tenant-key: bd
+  service-key: multitenancy
+  datasource-default:
+    alias: default
+    host: 127.0.0.1
+    port: 27017
+    database: tenant-default-db
+    username: admin
+    password: Zl6kEOWijt9pN!
+
