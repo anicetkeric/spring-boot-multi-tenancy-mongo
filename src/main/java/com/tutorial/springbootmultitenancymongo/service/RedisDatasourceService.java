@@ -24,11 +24,13 @@ public class RedisDatasourceService {
 
     private final ApplicationProperties applicationProperties;
     private final DataSourceProperties dataSourceProperties;
+    private final EncryptionService encryptionService;
 
-    public RedisDatasourceService(RedisTemplate redisTemplate, ApplicationProperties applicationProperties, DataSourceProperties dataSourceProperties) {
+    public RedisDatasourceService(RedisTemplate redisTemplate, ApplicationProperties applicationProperties, DataSourceProperties dataSourceProperties, EncryptionService encryptionService) {
         this.redisTemplate = redisTemplate;
         this.applicationProperties = applicationProperties;
         this.dataSourceProperties = dataSourceProperties;
+        this.encryptionService = encryptionService;
     }
 
     /**
@@ -71,13 +73,15 @@ public class RedisDatasourceService {
 
             List<DataSourceProperties.Tenant> tenants = dataSourceProperties.getDatasources();
             tenants.forEach(d -> {
+                String encryptedPassword = encryptionService.encrypt(d.getPassword(), applicationProperties.getEncryption().getSecret(), applicationProperties.getEncryption().getSalt());
+
                 TenantDatasource tenant = TenantDatasource.builder()
                         .alias(d.getAlias())
                         .database(d.getDatabase())
                         .host(d.getHost())
                         .port(d.getPort())
                         .username(d.getUsername())
-                        .password(d.getPassword())
+                        .password(encryptedPassword)
                         .build();
 
                 save(tenant);
@@ -112,7 +116,10 @@ public class RedisDatasourceService {
         // get list all datasource for this microservice
         List<Map<String, Object>> datasourceConfigList = findAll();
 
-        datasourceConfigList.forEach(data -> datasourceMap.put(String.format("%s_%s", applicationProperties.getTenantKey(), (String) data.get("alias")), new TenantDatasource((String) data.get("alias"), (String) data.get("host"), (int) data.get("port"), (String) data.get("database"), (String) data.get("username"), (String) data.get("password"))));
+        datasourceConfigList.forEach(data -> {
+            String decryptedPassword = encryptionService.decrypt((String) data.get("password"), applicationProperties.getEncryption().getSecret(), applicationProperties.getEncryption().getSalt());
+            datasourceMap.put(String.format("%s_%s", applicationProperties.getTenantKey(), (String) data.get("alias")), new TenantDatasource((String) data.get("alias"), (String) data.get("host"), (int) data.get("port"), (String) data.get("database"), (String) data.get("username"), decryptedPassword));
+        });
 
         return datasourceMap;
     }

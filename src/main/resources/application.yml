@@ -9,6 +9,9 @@ spring:
 application:
   tenant-key: bd
   service-key: multitenancy
+  encryption:
+    secret: W$qvICKQvj9P12eH9&J4DhAv
+    salt: vC@gXwPxSRirHOpBpRHapvU453%n219q
   datasource-default:
     alias: default
     host: 127.0.0.1
@@ -16,4 +19,3 @@ application:
     database: tenant-default-db
     username: admin
     password: Zl6kEOWijt9pN!
-

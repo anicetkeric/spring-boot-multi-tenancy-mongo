@@ -20,16 +20,24 @@ public class ApplicationProperties {
     private String serviceKey;
     private String tenantKey;
     private final DatasourceDefault datasourceDefault = new DatasourceDefault();
+    private final Encryption encryption = new Encryption();
 
     @Getter
     @Setter
-    public static class DatasourceDefault{
+    public static class DatasourceDefault {
         private String alias;
         private String host;
         private String port;
         private String database;
         private String username;
         private String password;
+    }
+
+    @Getter
+    @Setter
+    public static class Encryption {
+        private String secret;
+        private String salt;
     }
 
 }
