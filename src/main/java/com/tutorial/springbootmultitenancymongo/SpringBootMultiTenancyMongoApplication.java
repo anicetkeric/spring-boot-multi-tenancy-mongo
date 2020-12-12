@@ -34,8 +34,8 @@ public class SpringBootMultiTenancyMongoApplication implements CommandLineRunner
 
                 Employee employee = Employee.builder()
                         .firstName(alias)
-                        .lastName("lastName")
-                        .email("admin@localhost.com")
+                        .lastName(alias)
+                        .email(String.format("%s%s", alias, "@localhost.com" ))
                         .build();
                 employeeRepository.save(employee);
 
