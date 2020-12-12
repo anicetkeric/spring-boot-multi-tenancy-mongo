@@ -47,7 +47,6 @@ public class RedisDatasourceService {
         }
     }
 
-
     /**
      * Get all of keys
      *
@@ -56,17 +55,6 @@ public class RedisDatasourceService {
     public List findAll() {
         return redisTemplate.opsForHash().values(applicationProperties.getServiceKey());
     }
-
-
-    /**
-     * Delete key by alias
-     *
-     * @param alias datatsource alias
-     */
-    public void delete(String alias) {
-        redisTemplate.opsForHash().delete(applicationProperties.getServiceKey(), alias);
-    }
-
 
     /**
      * Get datasource
@@ -78,6 +66,7 @@ public class RedisDatasourceService {
         List<Map<String, Object>> datasourceConfigList = findAll();
 
         // Save datasource credentials first time
+        // In production mode, this part can be skip
         if (datasourceConfigList.isEmpty()) {
 
             List<DataSourceProperties.Tenant> tenants = dataSourceProperties.getDatasources();
@@ -127,6 +116,4 @@ public class RedisDatasourceService {
 
         return datasourceMap;
     }
-
-
 }

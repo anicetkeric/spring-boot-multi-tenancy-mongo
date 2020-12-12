@@ -1,4 +1,3 @@
-
 tenants:
   datasources:
     - alias: tenant_a
@@ -9,7 +8,7 @@ tenants:
       password: admin
     - alias: tenant_b
       host: localhost
-      port: 27017
+      port: 27027
       database: tenant_b_db
       username: admin
       password: admin
@@ -17,5 +16,11 @@ tenants:
       host: localhost
       port: 27017
       database: tenant_c_db
+      username: admin
+      password: admin
+    - alias: tenant_d
+      host: localhost
+      port: 27018
+      database: tenant_d_db
       username: admin
       password: admin

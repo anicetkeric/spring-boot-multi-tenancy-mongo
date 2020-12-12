@@ -2,7 +2,6 @@ package com.tutorial.springbootmultitenancymongo.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -14,10 +13,8 @@ import java.util.Objects;
  * <h2>RedisAppConfig</h2>
  *
  */
-@Profile({"dev","prod"})
 @Configuration
 public class RedisAppConfig {
-
 
     private final Environment env;
 
@@ -25,13 +22,11 @@ public class RedisAppConfig {
         this.env = env;
     }
 
-
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(env.getProperty("spring.redis.host"), Integer.parseInt(Objects.requireNonNull(env.getProperty("spring.redis.port"))));
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
-
     @Bean
     public RedisTemplate redisTemplate() {
         RedisTemplate template = new RedisTemplate<>();
@@ -39,5 +34,4 @@ public class RedisAppConfig {
         template.setEnableTransactionSupport(true);
         return template;
     }
-
 }

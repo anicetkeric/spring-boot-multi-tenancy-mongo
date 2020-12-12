@@ -15,11 +15,11 @@ public class TenantInterceptor implements WebRequestInterceptor {
 
     @Override
     public void preHandle(WebRequest request) {
-        String tenantHeader = request.getHeader(TENANT_HEADER);
+        String tenantId = request.getHeader(TENANT_HEADER);
 
-        if (tenantHeader != null && !tenantHeader.isEmpty()) {
-            TenantContext.setTenantId(request.getHeader(TENANT_HEADER));
-            log.info("Tenant header get: {}", tenantHeader);
+        if (tenantId != null && !tenantId.isEmpty()) {
+            TenantContext.setTenantId(tenantId);
+            log.info("Tenant header get: {}", tenantId);
         } else {
             log.error("Tenant header not found.");
             throw new TenantAliasNotFoundException("Tenant header not found.");
@@ -35,5 +35,4 @@ public class TenantInterceptor implements WebRequestInterceptor {
     public void afterCompletion(WebRequest webRequest, Exception e) {
 
     }
-
 }

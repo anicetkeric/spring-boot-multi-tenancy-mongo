@@ -76,16 +76,15 @@ public class MongoDataSources {
 
     /**
      * This will get called for each DB operations
-     * Resiliency handlers can be added here.
      *
      * @return MongoDatabase
      */
-    public MongoDatabase getMongoDatabaseForCurrentContext() {
+    public MongoDatabase mongoDatabaseCurrentTenantResolver() {
         try {
             final String tenantId = TenantContext.getTenantId();
 
             // Compose tenant alias. (tenantAlias = key + tenantId)
-            String tenantAlias = String.format("%s_%s", applicationProperties.getTenantKey(), (tenantId != null && !tenantId.isEmpty()) ? tenantId : applicationProperties.getDatasourceDefault().getAlias());
+            String tenantAlias = String.format("%s_%s", applicationProperties.getTenantKey(), tenantId);
 
             return tenantClients.get(tenantAlias).getClient().
                     getDatabase(tenantClients.get(tenantAlias).getDatabase());
