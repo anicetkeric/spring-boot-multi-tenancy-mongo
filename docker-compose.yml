@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  mongo1:
+    image: mongo
+    ports:
+      - '27017:27017'    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: tenant-default-db
+  mongo2:
+    image: mongo
+    ports:
+      - '27027:27017'    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: tenant-default-db
+  redis-tenant:
+    image: redis:5
+    restart: always
+    container_name: "redis_tenant"
+    volumes:
+      - redis_data:/data
+    ports:
+      - 6161:6379
+      -
+volumes:
+  redis_data:
+    driver: local
